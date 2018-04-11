@@ -1,0 +1,47 @@
+{% extends "tachweb/base.html" %} 
+{% set column_colors = [ '#d5f5e3', ' #fcf3cf', '#d6eaf8', '#e8daef', '#fadbd8', '#e5e8e8', ] %}
+
+{% block content %}
+        {% for project in REQ.context.planning %}
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <H1>Project: {{ REQ.context.planning[project]['name'] }}</H1>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-8">
+                        <blockquote>{{ REQ.context.planning[project]['description'] }}</blockquote>
+                    </div>
+                </div>
+                <div class="row">
+                    {% for column in REQ.context.planning[project]['columns'] %}
+                    <div class="col-sm-2" style="background-color:{{ column_colors[loop.index0] }};">
+                        <H4>{{ column['name'] }}</H4>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="row">
+                    {% for column in REQ.context.planning[project]['columns'] %}
+                    <div class="col-sm-2" style="background-color:{{ column_colors[loop.index0] }}; padding-left: 2px; padding-right: 2px;">
+                        {% for card in column['cards'] %}
+                        <div class='box'>
+                            {% if card['html_url'] %}
+                            <A HREF="{{ card['html_url'] }}" target="issue">
+                            {% endif %}
+                            <B>{{ card['title'] }}</B><BR>
+                            {% if card['html_url'] %}
+                            </A>
+                            {% endif %}
+                            {{ card['body'].replace('\n','<BR>') }}<BR>
+                            {% if card['assignees']|length > 0 %} <B>Assignees:</B>
+                            <I>{{ ", ".join(card['assignees']) }}</I><BR>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+{% endblock %}

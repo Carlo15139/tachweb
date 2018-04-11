@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="index, follow" />
+    <meta name="description" content="Tachyonic Project | OSS/BSS Framework" />
+    <meta name="keywords" content="tachweb wsgi restapi api web python oss bss framework">
+    <link rel="stylesheet" href="{{STATIC}}/tachweb/bootstrap/css/bootstrap.css" />
+    {% if 'org' in REQ.host %}
+    <meta name="google-site-verification" content="OHP6dW4tIwGPBpVEJQjDEatKo5YVFpHN1l7zP5a-9oU" />
+    {% else %}
+    <meta name="google-site-verification" content="0Nb-t0S91_AKbI8XDloknKNG4s97F5Z0DFAH_KZIN28" />
+    {% endif %}
+    <script src="{{STATIC}}/tachweb/jquery-3.1.1.js"></script>
+    <script src="{{STATIC}}/tachweb/bootstrap/js/bootstrap.js"></script>
+    <link rel="icon" href="{{STATIC}}/tachweb/tachyon-sm.png">
+    <link rel="stylesheet" href="{{STATIC}}/tachweb/tachweb.css" />
+    <link rel="stylesheet" href="{{STATIC}}/tachweb/doc.css" />
+    <link rel="stylesheet" href="{{STATIC}}/tachweb/pygments.css" />
+    <title>Tachyonic Project{% if title %} - {{ title }} {% endif %}</title>
+</head>
+<body>
+    <div class="navbar-wrapper">
+        <div class="container">
+            <nav class="navbar navbar-inverse navbar-static-top">
+                <div class="container">
+                    <div class="navbar-header">
+                        <a href="#" class="navbar-left pull-left"><img src="{{STATIC}}/tachweb/tachyon-sm.png"></a>
+                    </div>
+                    <div id="navbar" class="pull-left">
+                          {{ G.nav_menu.render('menu menu-horizontal menu-top-theme') }}
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+
+    <div class="jumbotron">
+      <div class="container">
+            {% if title %}
+                <H1 class="heading">{{ title }}</H1>
+            {% else %}
+                <H1 class="heading">Tachyonic Project</H1>
+            {% endif %}
+      </div>
+    </div>
+    <div class="push"></div>
+
+    <div class="container page">
+        <div class="row">
+            {% if no_news %}
+            <div class="col-sm-12">
+            {% else %}
+            <div class="col-sm-9">
+            {% endif %}
+            {% block content %}{% endblock %}
+            </div>
+            {% if not no_news %}
+            <div class="col-sm-3">
+                <H2>News</H2>
+                {% for item in REQ.context.news[:12] %}
+                <div class="box">
+                    {{ item[1] }}<BR>
+                    <B>{{ format_datetime(item[0]) }}</B>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="container">
+        <footer>
+            <p class="pull-right"><a href="#">Back to top</a></p>
+            <p>&copy; 2016 - 2018 Christiaan Frans Rademan, Dave Kruger </p>
+        </footer>
+    </div>
+</body>
+</html>

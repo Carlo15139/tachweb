@@ -1,0 +1,9 @@
+{% extends "tachweb/base.html" %} 
+{% block content %}
+<form method='post' action="/sphinx/{{project}}">
+<div class='box'>
+    <B>Version:</B> {{ refs }} {{ description }}
+</div>
+</form>
+{{ doc }}
+{% endblock %}
