@@ -12,19 +12,25 @@ from luxon.utils.mail import format_msg
 log = GetLogger()
 
 html_template = """
-Greetings {{name}}
+<html>
+<body>
+Greetings {% if name %} {{name}} {% endif %}
 
 {{body}}
 
-You can unsubscribe here: http://www.tachyonic.org/unsubscribe/{{token}}
+You can unsubscribe by using this link: http://www.tachyonic.org/unsubscribe/{{token}}
+
+<A HREF="http://www.tachyonic.org/unsubscribe/{{token}}">Click Here to unsubscribe</A>
 """
 
 text_template = """
-Greetings {{name}}
+Greetings {% if name %} {{name}} {% endif %}
 
 {{body}}
 
 You can unsubscribe here: http://www.tachyonic.org/unsubscribe/{{token}}
+</body>
+</html>
 """
 
 def main(argv):
@@ -43,7 +49,8 @@ def main(argv):
                        email_from='no-reply@tachyonic.org',
                        email_to=to,
                        multipart=True,
-                       test=None)
+                       token=rcpt['token'],
+                       name=rcpt['name'])
             try:
                 send_email('no-reply@tachyonic.org', to, msg=new)
             except Exception as e:
