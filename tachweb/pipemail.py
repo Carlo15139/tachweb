@@ -41,7 +41,8 @@ You can unsubscribe here: http://www.tachyonic.org/unsubscribe/{{token}}
 """
 
 def main(argv):
-    unix_user = os.getlogin()
+    # PLEASE STICK WITH THIS - ITS MORE SECURE
+    unix_user = pwd.getpwuid(os.getuid())[0]
     config = g.config = Config()
     config.load('/var/www/tachweb/settings.ini')
     GetLogger().app_configure()
