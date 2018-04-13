@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+import os
 import sys
 import email
 
@@ -11,6 +12,7 @@ from luxon.utils.mail import format_msg
 
 log = GetLogger()
 
+# WHEN WE RECEIVE HTML MESSAGE WE PARSE IT WITH THIS TEMPLATE JINJA
 html_template = """
 <html>
 <body>
@@ -18,22 +20,28 @@ Greetings {% if name %} {{name}} {% endif %}
 
 {{body}}
 
-You can unsubscribe by using this link: http://www.tachyonic.org/unsubscribe/{{token}}
+You can unsubscribe by using this link:
+http://www.tachyonic.org/unsubscribe/{{token}}<BR>
 
 <A HREF="http://www.tachyonic.org/unsubscribe/{{token}}">Click Here to unsubscribe</A>
+
+</body>
+</html>
 """
 
+# WHEN WE RECEIVE TEXT OR BOTH TEXT AND HTML WE PARSE THE TEXT PORITIONS WITH
+# THIS TEMPLATE. HOWERVER IF WE DID NOT GET INCLUDED FOR BACKWARDS COMPATIBILITY
+# WE WILL CREATE THE TEXT AND PARSE IT WITH THIS.
 text_template = """
 Greetings {% if name %} {{name}} {% endif %}
 
 {{body}}
 
 You can unsubscribe here: http://www.tachyonic.org/unsubscribe/{{token}}
-</body>
-</html>
 """
 
 def main(argv):
+    unix_user = os.getlogin()
     config = g.config = Config()
     config.load('/var/www/tachweb/settings.ini')
     GetLogger().app_configure()
